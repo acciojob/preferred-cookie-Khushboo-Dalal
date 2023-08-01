@@ -1,33 +1,21 @@
-//your JS code here. If required.
-let saveInput = document.querySelector('input[type="submit"]')
-saveInput.addEventListener("click",()=>{
-	let fontSize = document.querySelector('#fontsize').value
-	let fontColor = document.querySelector('input[type="color"]').value
-	// console.log(fontSize,fontColor)
-	document.cookie = "fontcolor="+fontColor+"; expires= Fri, 25 June 2023 12:00:00 UTC; path=/";
-	document.cookie = "fontsize="+fontSize+"; expires= Fri, 25 June 2023 12:00:00 UTC; path=/";
-}) 
+const form = document.querySelector("form");
 
-function showCookieValue(){
-let fontSizeCookie = getCookie("fontsize")
-	if(fontSizeCookie){
-		document.querySelector('#fontsize').value = fontSizeCookie 
-	}
-	let fontColorCookie =getCookie("fontcolor")
-	if(fontColorCookie){
-		document.querySelector('input[type="color"]').value = fontColorCookie 
-	}
+form.addEventListener("submit", function (event) {
+event.preventDefault();
+const fontsize = document.querySelector("#fontsize").value;
+const fontcolor = document.querySelector("#fontcolor").value;
+document.documentElement.style.setProperty("--fontsize", ${fontsize}px);
+document.documentElement.style.setProperty("--fontcolor", ${fontcolor});
+document.cookie = `fontsize=${fontsize};max-age=31536000`;
+document.cookie = `fontcolor=${fontcolor};max-age=31536000`;
+});
 
-	
-}
-
-function getCookie(key){
-	let cookies =  document.cookie.split("; ")
-	 .find((row) => row.startsWith(key))
-	if(cookies){
-		return cookies.split("=")[1]
-	}else{
-		return undefined
-	}
-	
+const cookieString = document.cookie;
+const cookies = cookieString.split(";");
+for (const cookie of cookies) {
+const [name, value] = cookie.split("=");
+if (name.trim() === "fontsize") {
+document.documentElement.style.setProperty("--fontsize", ${value}px);
+} else if (name.trim() === "fontcolor") {
+document.documentElement.style.setProperty("--fontcolor", ${value});
 }
